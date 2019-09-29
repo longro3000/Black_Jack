@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> BlackJack </title>
+</head>
+<script>
+var count=[0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	picture=[{name :'0', image:'0'},{name :'1', image:'1.jpg'},{name :'2' ,image:'2.jpg'},{name :'3', image:'3.jpg'},{name :'4', image:'4.jpg'},{name :'5', image:'5.jpg'},{name :'6', image:'6.jpg'},{name :'7', image:'7.jpg'},{name :'8', image:'8.jpg'},{name :'9', image:'9.jpg'},{name :'10' ,image:'10.jpg'},{name :'11', image:'11.jpg'},{name :'12', image:'12.jpg'},{name :'13', image:'13.jpg'}];
+	player=[];
+	com=[];
+	sum1=0,sum2=0;
+	j=2;
+function pre()
+{
+			player[0]=0;
+			com[0]=0;
+			player[1]= Math.floor(Math.random() * 13) + 1;
+			player[2]= Math.floor(Math.random() * 13) + 1;
+			com[1]= Math.floor(Math.random() * 13) + 1;
+			com[2]= Math.floor(Math.random() * 13) + 1;
+			count[player[1]]++;
+			count[player[2]]++;
+			count[com[1]]++;
+			count[com[2]]++;
+			result();			
+}
+function draw()
+{
+	var quest;
+	j++;
+	player[j]=Math.floor(Math.random()*13)+1;
+	count[player[j]]++;
+	quest=false;
+	while (quest==false)
+	if (count[player[j]]>=4)
+		{
+		player[j]=Math.floor(Math.random()*13)+1;
+		count[player[j]]++;
+		}
+	else quest=true;
+	result();
+}
+function result()
+{
+	var result = "<table><tr>";
+	var  pic;
+	var i,t;
+		sum1=0;
+		for (i=1;i<player.length;i++)
+				{
+					sum1=sum1+player[i];
+					t=player[i];
+					pic=picture[t];
+					result+="<th>"+'<img src="'+pic.image+'" width="200";height="200">'+"</th>";
+				}
+		result+="</tr></table>";
+		for (i=1;i<player.length;i++)
+				result+="CARD No."+i+" : "+player[i]+"<br>";
+			result+=" TOTAL POINT = "+sum1+"<br>";
+		if (sum1<=21)
+			result+="YOUR TOTAL POINT IS STILL LESS THAN 21 , WANNA HIT or STAND ? ";
+		else result+="YOUR TOTAL POINT IS EQUAL OR BIGGER THAN 21 ";
+		document.getElementById("result1").innerHTML=result;
+}
+function end()
+{
+	var result = "<table><tr>";
+	var pic;
+	var	i=2,t,quest;
+		sum2=0;
+		sum2=com[1]+com[2];
+		while ((sum2<21) || (sum2<sum1))
+			{
+				i=i+1;
+				com[i]= Math.floor(Math.random() * 13) + 1;
+				count[com[i]]++;
+				quest=false;
+				while (quest==false)
+					if (count[com[i]]>=4)
+						{
+							com[i]=Math.floor(Math.random()*13)+1;
+							count[com[i]]++;
+						}
+					else quest=true;
+				sum2=sum2+com[i];
+			}
+		for (i=1;i<com.length;i++)
+			{
+				t=com[i];
+				pic=picture[t];
+				result+="<th>"+'<img src="'+pic.image+'" width="200";height="200">'+"</th>";
+			}
+		result+="</tr></table>";
+		result+="COMPUTER TOTAL POINT IS "+sum2+"<br>";
+			if (sum1 == sum2 || ( sum1 >21 && sum2>21))
+				{
+					result+="IT'S A TIE !!!";
+				}
+			else if ( sum1<=21 && ( sum1 > sum2 || sum2 > 21 ))
+				{
+					result+="YOU WIN !!!";
+				}
+			else if ( sum2<= 21 && (sum2 > sum1 || sum1 > 21 ))
+				{
+					result+="YOU LOSE ";
+				}
+		document.getElementById("result2").innerHTML=result;	
+}
+</script>
+<body>
+<h1> HOMEWORK 7.5 </h1>
+	<p>YOUR CARD : <input type="button" value="CHECK!!!" onclick="pre()"> </p>
+<p id="result1"></p>
+<p> <input type="button" value="Hit ?" onclick="draw()"> <input type="button" value="Stand" onclick="end()">
+<p>COMPUTER CARDS : </p>
+<p id="result2"></p>
+</body>
+</html>
